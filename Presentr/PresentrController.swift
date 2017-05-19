@@ -38,6 +38,9 @@ class PresentrController: UIPresentationController, UIAdaptivePresentationContro
     /// A custom background view to be added on top of the regular background view.
     let customBackgroundView: UIView?
 
+    /// Dismiss completion
+    let dismissCompletion: (() -> Void)?
+    
     fileprivate var conformingPresentedController: PresentrDelegate? {
         return presentedViewController as? PresentrDelegate
     }
@@ -88,7 +91,9 @@ class PresentrController: UIPresentationController, UIAdaptivePresentationContro
          keyboardTranslationType: KeyboardTranslationType,
          dismissAnimated: Bool,
          contextFrameForPresentation: CGRect?,
-         shouldIgnoreTapOutsideContext: Bool) {
+         shouldIgnoreTapOutsideContext: Bool,
+         dismissCompletion: (() -> Void)? = nil
+        ) {
 
         self.presentationType = presentationType
         self.dismissOnTap = dismissOnTap
@@ -99,6 +104,7 @@ class PresentrController: UIPresentationController, UIAdaptivePresentationContro
         self.contextFrameForPresentation = contextFrameForPresentation
         self.shouldIgnoreTapOutsideContext = shouldIgnoreTapOutsideContext
         self.customBackgroundView = customBackgroundView
+        self.dismissCompletion = dismissCompletion
 
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
         
@@ -350,7 +356,7 @@ extension PresentrController {
             if shouldObserveKeyboard {
                 removeObservers()
             }
-            presentingViewController.dismiss(animated: dismissAnimated, completion: nil)
+            presentingViewController.dismiss(animated: dismissAnimated, completion: dismissCompletion)
         }
     }
 
@@ -398,7 +404,7 @@ extension PresentrController {
         let shouldDismiss = swipeTop ? (amount.y < swipeLimit) : ( amount.y > swipeLimit)
         if shouldDismiss {
             presentedViewIsBeingDissmissed = true
-            presentedViewController.dismiss(animated: dismissAnimated, completion: nil)
+            presentedViewController.dismiss(animated: dismissAnimated, completion: dismissCompletion)
         }
     }
 

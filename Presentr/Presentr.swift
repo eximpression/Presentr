@@ -113,6 +113,9 @@ public class Presentr: NSObject {
         }
     }
 
+    /// Dismiss completion 
+    public var dismissCompletion: (() -> Void)?
+    
     fileprivate var contextFrameForPresentation: CGRect?
 
     // MARK: Init
@@ -200,7 +203,8 @@ extension Presentr: UIViewControllerTransitioningDelegate {
                                     keyboardTranslationType:  keyboardTranslationType,
                                     dismissAnimated: dismissAnimated,
                                     contextFrameForPresentation: contextFrameForPresentation,
-                                    shouldIgnoreTapOutsideContext: shouldIgnoreTapOutsideContext)
+                                    shouldIgnoreTapOutsideContext: shouldIgnoreTapOutsideContext,
+                                    dismissCompletion:dismissCompletion)
     }
 
 }
