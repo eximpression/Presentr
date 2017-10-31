@@ -84,12 +84,7 @@ open class PresentrAnimation: NSObject {
         let initialFrameForVC = transform(containerFrame: transitionContext.containerView.frame, finalFrame: finalFrameForVC)
 
         let finalFrame = transitionContext.isPresenting ? finalFrameForVC : initialFrameForVC
-        if transitionContext.isPresenting {
             transitionContext.animatingView?.frame = finalFrame
-        }else {
-            transitionContext.animatingView?.autoresizesSubviews = false;
-            transitionContext.animatingView?.frame = finalFrame
-        }
     }
 
     /// Actions to be performed after the animation.

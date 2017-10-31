@@ -356,7 +356,11 @@ extension PresentrController {
             if shouldObserveKeyboard {
                 removeObservers()
             }
-            presentingViewController.dismiss(animated: dismissAnimated, completion: dismissCompletion)
+            if dismissCompletion != nil {
+                dismissCompletion!()
+            }
+            presentingViewController.dismiss(animated: dismissAnimated, completion: nil)
+            
         }
     }
 
