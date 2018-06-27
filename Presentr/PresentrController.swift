@@ -41,6 +41,9 @@ class PresentrController: UIPresentationController, UIAdaptivePresentationContro
     /// Dismiss completion
     let dismissCompletion: (() -> Void)?
     
+    /// Dismiss  begin
+    public var dismissBegin: (() -> Void)?
+    
     fileprivate var conformingPresentedController: PresentrDelegate? {
         return presentedViewController as? PresentrDelegate
     }
@@ -102,6 +105,7 @@ class PresentrController: UIPresentationController, UIAdaptivePresentationContro
          dismissAnimated: Bool,
          contextFrameForPresentation: CGRect?,
          shouldIgnoreTapOutsideContext: Bool,
+         dismissBegin: (() -> Void)? = nil,
          dismissCompletion: (() -> Void)? = nil
         ) {
 
@@ -115,6 +119,7 @@ class PresentrController: UIPresentationController, UIAdaptivePresentationContro
         self.shouldIgnoreTapOutsideContext = shouldIgnoreTapOutsideContext
         self.customBackgroundView = customBackgroundView
         self.dismissCompletion = dismissCompletion
+        self.dismissBegin = dismissBegin
 
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
         
@@ -366,10 +371,10 @@ extension PresentrController {
             if shouldObserveKeyboard {
                 removeObservers()
             }
-            if dismissCompletion != nil {
-                dismissCompletion!()
-            }
-            presentingViewController.dismiss(animated: dismissAnimated, completion: nil)
+
+            dismissBegin?()
+            
+            presentingViewController.dismiss(animated: dismissAnimated, completion: dismissCompletion)
             
         }
     }
@@ -417,6 +422,7 @@ extension PresentrController {
         let dismiss = shouldSwipeTop ? (amount.y < swipeLimit) : ( amount.y > swipeLimit)
         if dismiss && latestShouldDismiss {
             presentedViewIsBeingDissmissed = true
+            dismissBegin?()
             presentedViewController.dismiss(animated: dismissAnimated, completion: dismissCompletion)
         }
     }

@@ -116,7 +116,10 @@ public class Presentr: NSObject {
         }
     }
 
-    /// Dismiss completion 
+    /// Dismiss  begin
+    public var dismissBegin: (() -> Void)?
+    
+    /// Dismiss completion
     public var dismissCompletion: (() -> Void)?
     
     fileprivate var contextFrameForPresentation: CGRect?
@@ -207,6 +210,7 @@ extension Presentr: UIViewControllerTransitioningDelegate {
                                     dismissAnimated: dismissAnimated,
                                     contextFrameForPresentation: contextFrameForPresentation,
                                     shouldIgnoreTapOutsideContext: shouldIgnoreTapOutsideContext,
+                                    dismissBegin:dismissBegin,
                                     dismissCompletion:dismissCompletion)
     }
 
