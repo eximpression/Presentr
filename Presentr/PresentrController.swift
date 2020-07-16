@@ -160,6 +160,7 @@ class PresentrController: UIPresentationController, UIAdaptivePresentationContro
     private func setupBackground(_ backgroundColor: UIColor, backgroundOpacity: Float, blurBackground: Bool, blurStyle: UIBlurEffectStyle) {
         let tap = UITapGestureRecognizer(target: self, action: #selector(chromeViewTapped))
         chromeView.addGestureRecognizer(tap)
+        tap.delegate = self
 
 		if outsideContextTap != .passthrough {
 			let tap = UITapGestureRecognizer(target: self, action: #selector(chromeViewTapped))
@@ -488,3 +489,17 @@ extension PresentrController {
     }
 
 }
+
+extension PresentrController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        
+        if let  customBackgroundView = customBackgroundView {
+            let locationInView = touch.location(in: chromeView)
+            if customBackgroundView.frame.contains(locationInView){
+                return false
+            }
+        }
+        return true
+    }
+}
+
