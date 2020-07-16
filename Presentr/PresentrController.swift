@@ -390,8 +390,8 @@ extension PresentrController {
             }
 
             dismissBegin?()
-            
-            presentingViewController.dismiss(animated: dismissAnimated, completion: dismissCompletion)
+            dismissCompletion?()
+            presentingViewController.dismiss(animated: dismissAnimated, completion: nil)
             
         }
     }
@@ -438,7 +438,8 @@ extension PresentrController {
         if dismiss && latestShouldDismiss {
             presentedViewIsBeingDissmissed = true
             dismissBegin?()
-            presentedViewController.dismiss(animated: dismissAnimated, completion: dismissCompletion)
+            dismissCompletion?()
+            presentedViewController.dismiss(animated: dismissAnimated, completion: nil)
         }
     }
 
